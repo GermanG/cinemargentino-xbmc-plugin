@@ -41,4 +41,6 @@ for link in ret:
     else:
       video['video_url'] = h264["sd"]["url"]
 
+    print h264.get("hd")
     print video['video_url']
+    print video['Title']
