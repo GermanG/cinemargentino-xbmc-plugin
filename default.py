@@ -22,9 +22,9 @@ import urlparse
 import xbmcgui
 import xbmcplugin
 
-from parsedom import parseDOM
 import urllib2
 import re
+import CommonFunctions as common
 
 try: import simplejson as json
 except ImportError: import json
@@ -63,12 +63,12 @@ elif mode[0] == 'folder':
 
     response = urllib2.urlopen('http://www.cinemargentino.com/category/type/%s' % foldername)
     link_html = response.read()
-    ret = parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
+    ret = common.parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
 
     for link in ret:
       response = urllib2.urlopen('http://www.cinemargentino.com' + link)
       link_html = response.read()
-      ret = parseDOM(link_html, "iframe", attrs = { "id": "cinemargentinoplayer" }, ret = "src")
+      ret = common.parseDOM(link_html, "iframe", attrs = { "id": "cinemargentinoplayer" }, ret = "src")
 
       m = re.search("([0-9]{4,})", ret[0])
 
