@@ -16,15 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import sys
-import urllib
-import urlparse
-import xbmcgui
-import xbmcplugin
+import xbmcgui, xbmcplugin
 
-import urllib2
-import re
+import urllib2, urllib, re, sys, urlparse
+
 import CommonFunctions as common
+import StorageServer
 
 try: import simplejson as json
 except ImportError: import json
@@ -34,6 +31,19 @@ addon_handle = int(sys.argv[1])
 args = urlparse.parse_qs(sys.argv[2][1:])
 
 xbmcplugin.setContent(addon_handle, 'movies')
+
+# cache
+cache = StorageServer.StorageServer("cinemargentino", 8)
+
+
+def get_url(url, http_headers=None):
+    if http_headers:
+       request = urllib2.Request(url, headers=http_headers)
+    else:
+       request = urllib2.Request(url)
+        
+    return urllib2.urlopen(request).read()
+    
 
 def build_url(query):
     return base_url + '?' + urllib.urlencode(query)
@@ -61,21 +71,21 @@ if mode is None:
 elif mode[0] == 'folder':
     foldername = args['foldername'][0]
 
-    response = urllib2.urlopen('http://www.cinemargentino.com/category/type/%s' % foldername)
-    link_html = response.read()
+    link_html = cache.cacheFunction(get_url, 'http://www.cinemargentino.com/category/type/%s' % foldername )
+
     ret = common.parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
 
     for link in ret:
-      response = urllib2.urlopen('http://www.cinemargentino.com' + link)
-      link_html = response.read()
+      link_html = cache.cacheFunction(get_url, 'http://www.cinemargentino.com' + link )
+
       ret = common.parseDOM(link_html, "iframe", attrs = { "id": "cinemargentinoplayer" }, ret = "src")
 
       m = re.search("([0-9]{4,})", ret[0])
 
       if m:
-        request = urllib2.Request('http://player.vimeo.com/video/%s/config' % m.groups(1), headers={"Referer":"http://www.cinemargentino.com/"})
+        request = cache.cacheFunction(get_url, 'http://player.vimeo.com/video/%s/config' % m.groups(1), {"Referer":"http://www.cinemargentino.com/"})
 
-        collection = json.loads(urllib2.urlopen(request).read())
+        collection = json.loads(request)
         h264 = collection["request"]["files"]["h264"]
 
         video = {}
