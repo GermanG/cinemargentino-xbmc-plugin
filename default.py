@@ -73,42 +73,58 @@ elif mode[0] == 'folder':
 
     link_html = cache.cacheFunction(get_url, 'http://www.cinemargentino.com/category/type/%s' % foldername )
 
-    ret = common.parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
+    #ret = common.parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
+    ret = common.parseDOM(link_html, "div", attrs = { "class": "movie_list_cell_info" })
 
-    for link in ret:
-      link_html = cache.cacheFunction(get_url, 'http://www.cinemargentino.com' + link )
+    for entry in ret:
+      #link_html = get_url('http://www.cinemargentino.com' + link )
 
-      ret = common.parseDOM(link_html, "iframe", attrs = { "id": "cinemargentinoplayer" }, ret = "src")
+      # print entry
+      link = common.parseDOM(entry, "a", attrs = { "class": "title" }, ret = "href")[0]
+      title = common.parseDOM(entry, "a", attrs = { "class": "title" })[0]
+      author = common.parseDOM(entry, "h3")[0]
+      date = common.parseDOM(entry, "h4")[0].split('|')[1]
+      duration = common.parseDOM(entry, "h4")[0].split('|')[2]
+      print link
+      folder = title + ' ( ' + author + ' | ' + date + ') ' + duration
+      url = build_url({'mode': 'link', 'link': link})
+      li = xbmcgui.ListItem(folder, iconImage='DefaultFolder.png')
+      xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
+                                  listitem=li, isFolder=True)
 
-      m = re.search("([0-9]{4,})", ret[0])
+    xbmcplugin.endOfDirectory(addon_handle)
+elif mode[0] == 'link':
+    link = urllib.unquote_plus(args['link'][0])
+    link_html = cache.cacheFunction(get_url, 'http://www.cinemargentino.com' + link )
 
-      if m:
-        request = cache.cacheFunction(get_url, 'http://player.vimeo.com/video/%s/config' % m.groups(1), {"Referer":"http://www.cinemargentino.com/"})
+    ret = common.parseDOM(link_html, "iframe", attrs = { "id": "cinemargentinoplayer" }, ret = "src")
 
-        collection = json.loads(request)
-        h264 = collection["request"]["files"]["h264"]
+    m = re.search("([0-9]{4,})", ret[0])
 
-        video = {}
-        video['videoid'] = m.groups(1)
-        video['Title'] = collection["video"]["title"]
-        video['Duration'] = "0"
-        video['thumbnail'] = ""
-        video['Studio'] = ""
-        video['request_signature'] = ""
-        video['request_signature_expires'] = ""
-        video['urls'] = h264
-    
-        #if h264.get("hd"):
-        #  video['isHD'] = "1"
-        #  video['video_url'] = h264["hd"]["url"]
-        #else:
-        #  video['video_url'] = h264["sd"]["url"]
-        video['video_url'] = h264["sd"]["url"]
+    if m:
+      request = get_url('http://player.vimeo.com/video/%s/config' % m.groups(1), {"Referer":"http://www.cinemargentino.com/"})
+
+      collection = json.loads(request)
+      h264 = collection["request"]["files"]["h264"]
+
+      video = {}
+      video['videoid'] = m.groups(1)
+      video['Title'] = collection["video"]["title"]
+      video['Duration'] = "0"
+      video['thumbnail'] = ""
+      video['Studio'] = ""
+      video['request_signature'] = ""
+      video['request_signature_expires'] = ""
+      video['urls'] = h264
   
-        url=video['video_url']
-    
+      li = xbmcgui.ListItem('SD | ' + video['Title'], iconImage='DefaultVideo.png')
+      xbmcplugin.addDirectoryItem(handle=addon_handle, url=h264["sd"]["url"], listitem=li)
+
+      if h264.get("hd"):
+        li = xbmcgui.ListItem('HD | ' + video['Title'], iconImage='DefaultVideo.png')
+        xbmcplugin.addDirectoryItem(handle=addon_handle, url=h264["hd"]["url"], listitem=li)
+
   
-        li = xbmcgui.ListItem(video['Title'], iconImage='DefaultVideo.png')
-        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
+  
   
     xbmcplugin.endOfDirectory(addon_handle)
