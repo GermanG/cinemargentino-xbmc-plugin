@@ -23,7 +23,7 @@ from parsedom import parseDOM
 try: import simplejson as json
 except ImportError: import json
 
-#base_url = sys.argv[0]
+base_url = 'x'
 #addon_handle = int(sys.argv[1])
 #args = urlparse.parse_qs(sys.argv[2][1:])
 
@@ -66,20 +66,27 @@ elif mode[0] == 'folder':
     link_html = get_url('http://www.cinemargentino.com/category/type/%s' % foldername )
 
     #ret = parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
-    ret = parseDOM(link_html, "div", attrs = { "class": "movie_list_cell_info" })
+    ret = parseDOM(link_html, "div", attrs = { "class": "movie_list_cell" })
 
     for entry in ret:
       #link_html = get_url('http://www.cinemargentino.com' + link )
 
-      # print entry
-      link = parseDOM(entry, "a", attrs = { "class": "title" }, ret = "href")[0]
-      title = parseDOM(entry, "a", attrs = { "class": "title" })[0]
-      author = parseDOM(entry, "h3")[0]
-      date = parseDOM(entry, "h4")[0].split('|')[1]
-      duration = parseDOM(entry, "h4")[0].split('|')[2]
+      print entry
+      thumb_t = parseDOM(entry, "a", attrs = { "class": "subtitle_marker"})
+      thumbnail = parseDOM(thumb_t, "img", ret = "src")
+      print "==============================================================="
+      print thumbnail
+      print "==============================================================="
+      entry_info = parseDOM(entry, "div", attrs = { "class": "movie_list_cell_info" })
+      print entry_info
+      link = parseDOM(entry_info, "a", attrs = { "class": "title" }, ret = "href")[0]
+      title = parseDOM(entry_info, "a", attrs = { "class": "title" })[0]
+      author = parseDOM(entry_info, "h3")[0]
+      date = parseDOM(entry_info, "h4")[0].split('|')[1]
+      duration = parseDOM(entry_info, "h4")[0].split('|')[2]
       print link
       folder = title + ' ( ' + author + ' | ' + date + ') ' + duration
-      url = build_url({'mode': 'link', 'foldername': folder, 'link' : link })
+      url = build_url({'mode': 'link', 'link' : link })
 
       m = 0
 

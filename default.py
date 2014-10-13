@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+# This code is based on audio/video example, vimeo plugin and crackle2fg plugin, thanks!
+
 import xbmcgui, xbmcplugin
 
 import urllib2, urllib, re, sys, urlparse
@@ -43,7 +45,24 @@ def get_url(url, http_headers=None):
        request = urllib2.Request(url)
         
     return urllib2.urlopen(request).read()
-    
+
+# Remove HTML codes (stolen from crackle2fg code, thanks!)
+def cleanHtml(dirty):
+    clean = re.sub('&quot;', '\"', dirty)
+    clean = re.sub('&#039;', '\'', clean)
+    clean = re.sub('&#215;', 'x', clean)
+    clean = re.sub('&#038;', '&', clean)
+    clean = re.sub('&#8216;', '\'', clean)
+    clean = re.sub('&#8217;', '\'', clean)
+    clean = re.sub('&#8211;', '-', clean)
+    clean = re.sub('&#8220;', '\"', clean)
+    clean = re.sub('&#8221;', '\"', clean)
+    clean = re.sub('&#8212;', '-', clean)
+    clean = re.sub('&amp;', '&', clean)
+    clean = re.sub("`", '', clean)
+    clean = re.sub('<em>', '[I]', clean)
+    clean = re.sub('</em>', '[/I]', clean)
+    return clean
 
 def build_url(query):
     return base_url + '?' + urllib.urlencode(query)
@@ -73,22 +92,24 @@ elif mode[0] == 'folder':
 
     link_html = cache.cacheFunction(get_url, 'http://www.cinemargentino.com/category/type/%s' % foldername )
 
-    #ret = common.parseDOM(link_html, "a", attrs = { "class": "title" }, ret = "href")
-    ret = common.parseDOM(link_html, "div", attrs = { "class": "movie_list_cell_info" })
+    ret = common.parseDOM(link_html, "div", attrs = { "class": "movie_list_cell" })
 
     for entry in ret:
-      #link_html = get_url('http://www.cinemargentino.com' + link )
 
-      # print entry
-      link = common.parseDOM(entry, "a", attrs = { "class": "title" }, ret = "href")[0]
-      title = common.parseDOM(entry, "a", attrs = { "class": "title" })[0]
-      author = common.parseDOM(entry, "h3")[0]
-      date = common.parseDOM(entry, "h4")[0].split('|')[1]
-      duration = common.parseDOM(entry, "h4")[0].split('|')[2]
-      print link
-      folder = title + ' ( ' + author + ' | ' + date + ') ' + duration
+      thumb_t = common.parseDOM(entry, "a", attrs = { "class": "subtitle_marker"})
+      thumbnail = common.parseDOM(thumb_t, "img", ret = "src")
+
+      entry_info = common.parseDOM(entry, "div", attrs = { "class": "movie_list_cell_info" })
+
+      link = common.parseDOM(entry_info, "a", attrs = { "class": "title" }, ret = "href")[0]
+      title = common.parseDOM(entry_info, "a", attrs = { "class": "title" })[0]
+      author = common.parseDOM(entry_info, "h3")[0]
+      date = common.parseDOM(entry_info, "h4")[0].split('|')[1]
+      duration = common.parseDOM(entry_info, "h4")[0].split('|')[2]
+
+      folder = cleanHtml(title) + ' ( ' + cleanHtml(author) + ' | ' + date + ') ' + duration
       url = build_url({'mode': 'link', 'link': link})
-      li = xbmcgui.ListItem(folder, iconImage='DefaultFolder.png')
+      li = xbmcgui.ListItem(folder, iconImage='DefaultFolder.png', thumbnailImage=thumbnail[0])
       xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
                                   listitem=li, isFolder=True)
 
