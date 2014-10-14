@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="fanart.svg">
+   sodipodi:docname="fanart.svg"
+   inkscape:export-filename="/home/diana/german/plugin.video.cinemargentino/fanart.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -160,7 +163,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76"
-     inkscape:cx="665.18945"
+     inkscape:cx="667.82103"
      inkscape:cy="341.73012"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -205,7 +208,7 @@
        sodipodi:rx="59.46125"
        sodipodi:ry="59.46125"
        d="m 426.67466,173.29988 a 59.46125,59.46125 0 1 1 -118.9225,0 59.46125,59.46125 0 1 1 118.9225,0 z"
-       transform="matrix(2.695234,0,0,2.695234,-216.39186,473.22705)" />
+       transform="matrix(2.695234,0,0,2.695234,-342.70765,323.22705)" />
     <path
        sodipodi:type="arc"
        style="fill:#ffffff;filter:url(#filter4146)"
@@ -215,7 +218,7 @@
        sodipodi:rx="20.088261"
        sodipodi:ry="20.490026"
        d="m 385.69461,77.278 a 20.088261,20.490026 0 1 1 -40.17652,0 20.088261,20.490026 0 1 1 40.17652,0 z"
-       transform="matrix(2.9520179,0,0,2.9520179,-305.94227,712.18476)" />
+       transform="matrix(2.9520179,0,0,2.9520179,-432.25806,562.18476)" />
     <path
        sodipodi:type="arc"
        style="fill:#000000;filter:url(#filter4142)"
@@ -225,7 +228,7 @@
        sodipodi:rx="12.454721"
        sodipodi:ry="12.454721"
        d="m 241.86267,270.12531 a 12.454721,12.454721 0 1 1 -24.90945,0 12.454721,12.454721 0 1 1 24.90945,0 z"
-       transform="matrix(2.475886,0,0,2.475886,205.34629,271.51132)" />
+       transform="matrix(2.475886,0,0,2.475886,79.030501,121.51132)" />
     <path
        sodipodi:type="arc"
        style="fill:#000000;filter:url(#filter4138)"
@@ -235,7 +238,7 @@
        sodipodi:rx="59.46125"
        sodipodi:ry="59.46125"
        d="m 426.67466,173.29988 a 59.46125,59.46125 0 1 1 -118.9225,0 59.46125,59.46125 0 1 1 118.9225,0 z"
-       transform="matrix(2.695234,0,0,2.695234,127.95483,473.22708)" />
+       transform="matrix(2.695234,0,0,2.695234,1.6390405,323.22708)" />
     <path
        sodipodi:type="arc"
        style="fill:#ffffff;filter:url(#filter4134)"
@@ -245,7 +248,7 @@
        sodipodi:rx="20.088261"
        sodipodi:ry="20.490026"
        d="m 385.69461,77.278 a 20.088261,20.490026 0 1 1 -40.17652,0 20.088261,20.490026 0 1 1 40.17652,0 z"
-       transform="matrix(2.9520179,0,0,2.9520179,38.404412,712.18478)" />
+       transform="matrix(2.9520179,0,0,2.9520179,-87.911377,562.18478)" />
     <path
        sodipodi:type="arc"
        style="fill:#000000;filter:url(#filter4130)"
@@ -255,14 +258,14 @@
        sodipodi:rx="12.454721"
        sodipodi:ry="12.454721"
        d="m 241.86267,270.12531 a 12.454721,12.454721 0 1 1 -24.90945,0 12.454721,12.454721 0 1 1 24.90945,0 z"
-       transform="matrix(2.475886,0,0,2.475886,549.69298,271.51135)" />
+       transform="matrix(2.475886,0,0,2.475886,423.37719,121.51135)" />
     <rect
        style="fill:#000000;filter:url(#filter4126)"
        id="rect3897"
        width="201.41034"
        height="51.976864"
-       x="1137.5718"
-       y="781.42761"
+       x="1011.256"
+       y="631.42761"
        ry="1.3898422"
        rx="1.3898422" />
     <rect
@@ -270,8 +273,8 @@
        id="rect3902"
        width="51.912224"
        height="30.935484"
-       x="1147.0487"
-       y="791.9483"
+       x="1020.7329"
+       y="641.9483"
        ry="1.9827883"
        rx="1.9827886" />
     <rect
@@ -279,8 +282,8 @@
        id="rect3902-8"
        width="51.912224"
        height="30.935484"
-       x="1212.074"
-       y="791.9483"
+       x="1085.7582"
+       y="641.9483"
        ry="1.9827883"
        rx="1.9827886" />
     <rect
@@ -288,8 +291,8 @@
        id="rect3902-1"
        width="51.912224"
        height="30.935484"
-       x="1276.3481"
-       y="791.9483"
+       x="1150.0323"
+       y="641.9483"
        ry="1.9827883"
        rx="1.9827886" />
   </g>
